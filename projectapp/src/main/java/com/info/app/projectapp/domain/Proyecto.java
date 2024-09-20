@@ -1,9 +1,6 @@
 package com.info.app.projectapp.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -37,10 +34,13 @@ public class Proyecto {
     @Column(nullable = false)
     private LocalDate fechaFin;
 
-//    private Usuario lider;
-//
-//
-//    private List<Usuario> colaboradores;
-//
-//    private List<Tarea> tareas;
+    @OneToOne
+    @JoinColumn(name = "lider_id", nullable = false)
+    private Usuario lider;
+
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Usuario> colaboradores;
+
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER )
+    private List<Tarea> tareas;
 }

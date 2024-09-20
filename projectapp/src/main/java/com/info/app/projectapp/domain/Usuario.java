@@ -34,5 +34,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private RolEnum rol;
 
-//    private Proyecto proyecto;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Proyecto proyecto;
 }

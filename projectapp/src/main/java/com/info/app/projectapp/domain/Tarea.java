@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -34,7 +35,10 @@ public class Tarea {
     @Enumerated(EnumType.STRING)
     private EstadoTareaEnum estado;
 
-//    private Proyecto proyecto;
-//
-//    private List<Documento> documentos;
+    @ManyToOne
+    private Proyecto proyecto;
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "tarea_id") //Columna que hace referencia a la tarea
+    private List<Documento> documentos;
 }
