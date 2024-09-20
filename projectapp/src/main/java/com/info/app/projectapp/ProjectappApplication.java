@@ -1,0 +1,14 @@
+package com.info.app.projectapp;
+
+import com.info.app.projectapp.domain.Proyecto;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ProjectappApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProjectappApplication.class, args);
+	}
+
+}
