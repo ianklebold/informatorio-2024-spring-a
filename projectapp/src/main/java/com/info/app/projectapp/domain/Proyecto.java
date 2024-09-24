@@ -1,5 +1,6 @@
 package com.info.app.projectapp.domain;
 
+import com.info.app.projectapp.domain.enums.RolEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,4 +44,15 @@ public class Proyecto {
 
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER )
     private List<Tarea> tareas;
+
+    public void setUsuarioByRol(Usuario usuario){
+
+        if ( RolEnum.LIDER.equals( usuario.getRol() ) ){
+            this.setLider( usuario );
+        }else {
+            this.getColaboradores().add( usuario );
+        }
+
+    }
+
 }
