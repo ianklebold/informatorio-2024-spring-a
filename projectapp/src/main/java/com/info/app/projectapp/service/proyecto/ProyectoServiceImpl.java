@@ -3,6 +3,7 @@ package com.info.app.projectapp.service.proyecto;
 import com.info.app.projectapp.domain.Proyecto;
 import com.info.app.projectapp.dto.project.ProyectoCreateDto;
 import com.info.app.projectapp.dto.project.ProyectoCreatedDto;
+import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
 import com.info.app.projectapp.mappers.proyecto.ProjectMapper;
 import com.info.app.projectapp.repository.proyecto.ProyectoRepository;
@@ -11,9 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +31,19 @@ public class ProyectoServiceImpl implements ProyectoService{
             return optionalProyecto.get();
         }else {
             throw new NoSuchElementException("Proyecto no encontrado");
+        }
+    }
+
+    @Override
+    public Optional<ProyectoDto> getProyectoDtoById(UUID uuid) {
+        Optional<Proyecto> optionalProyecto = proyectoRepository.findById(uuid);
+
+        if(optionalProyecto.isPresent()) {
+            return Optional.of(
+                    projectMapper.proyectoToProyectoDto( optionalProyecto.get() )
+            );
+        }else {
+            return Optional.empty();
         }
     }
 
@@ -56,7 +68,7 @@ public class ProyectoServiceImpl implements ProyectoService{
 
         if ( !proyectoCreateDto.colaboradoresId().isEmpty() ){
 
-            //Controlar que todos los usuarios existan en la bd
+            //Controlar que todos los usuarios existan en la bd, sino excepcion
 
 
             //Controlar que el usuario no tenga un proyecto ya asignado
@@ -74,5 +86,13 @@ public class ProyectoServiceImpl implements ProyectoService{
         return Optional.of(
                 projectMapper.projectToProyectoCreatedDto( proyectoRepository.save( newProject ) )
         );
+    }
+
+    @Override
+    public List<ProyectoDto> getAllProyectos() {
+
+        return proyectoRepository.findAll().stream()
+                .map( proyecto -> projectMapper.proyectoToProyectoDto(proyecto) )
+                .toList();
     }
 }
