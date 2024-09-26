@@ -23,6 +23,11 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public UsuarioDto usuarioToUsuarioDto(Usuario usuario) {
+
+        if (usuario == null){
+            return null;
+        }
+
         return new UsuarioDto(
                 usuario.getNombre(),
                 usuario.getEmail(),

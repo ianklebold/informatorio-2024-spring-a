@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService{
         Proyecto proyecto = proyectoService.getProyectoById( usuario.idProyecto() );
 
         usuarioCreated.setProyecto(proyecto);
-        proyecto.setUsuarioByRol( usuarioCreated );
+        //proyecto.setUsuarioByRol( usuarioCreated ); <-- TODO No lo necesitamos por el Cascade de Proyecto a Usuario. Eliminarlo!
 
-        proyectoRepository.save( proyecto );
+        //proyectoRepository.save( proyecto ); <-- TODO No lo necesitamos por el Cascade de Proyecto a Usuario. Eliminarlo!
         return userMapper.usuarioToUsuarioDto( usuarioRepository.save( usuarioCreated ) );
     }
 }
