@@ -10,6 +10,7 @@ import com.info.app.projectapp.repository.proyecto.ProyectoRepository;
 import com.info.app.projectapp.repository.usuario.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -89,7 +90,21 @@ public class ProyectoServiceImpl implements ProyectoService{
     }
 
     @Override
-    public List<ProyectoDto> getAllProyectos() {
+    public List<ProyectoDto> getAllProyectos(Optional<LocalDate> fechaInicio,
+                                             Optional<LocalDate> fechaFin,
+                                             String nombre) {
+
+        if (fechaInicio.isEmpty() && fechaFin.isEmpty() && StringUtils.hasText( nombre )) {
+
+            return proyectoRepository.findByNombreLike( "%" + nombre + "%" ).stream()
+                    .map( proyecto -> projectMapper.proyectoToProyectoDto(proyecto) )
+                    .toList();
+        }else if (fechaInicio.isPresent() && fechaFin.isPresent() && !StringUtils.hasText( nombre )){
+            //Query method que me devuelva todas los proyectos en el rango de fecha inicio y fin
+            return proyectoRepository.findByFechaInicioGreaterThanEqualAndFechaFinNotNullAndFechaFinLessThan(fechaInicio.get(), fechaFin.get()).stream()
+                    .map( proyecto -> projectMapper.proyectoToProyectoDto(proyecto) )
+                    .toList();
+        }
 
         return proyectoRepository.findAll().stream()
                 .map( proyecto -> projectMapper.proyectoToProyectoDto(proyecto) )

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -48,8 +49,22 @@ public class ProyectoController {
     }
 
     @GetMapping("/api/v1/proyecto")
-    public List<ProyectoDto> getAllProyectos(){
-        return proyectoService.getAllProyectos();
+    public List<ProyectoDto> getAllProyectos(
+            @RequestParam(required = false, name = "fechaInicio")LocalDate fechaInicio,
+            @RequestParam(required = false, name = "fechaFin") LocalDate fechaFin,
+            @RequestParam(required = false, name = "nombre") String nombre
+            ){
+
+        System.out.println("Fecha de Inicio: " + fechaInicio);
+        System.out.println("Fecha de Fin: " + fechaFin);
+        System.out.println("Fecha de nombre: " + nombre);
+
+
+        return proyectoService.getAllProyectos(
+                Optional.ofNullable(fechaInicio),
+                Optional.ofNullable(fechaFin) ,
+                nombre
+        );
     }
 
     @GetMapping("/api/v1/proyecto/{idProyecto}")

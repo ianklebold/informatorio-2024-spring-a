@@ -6,6 +6,7 @@ import com.info.app.projectapp.dto.project.ProyectoCreatedDto;
 import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,5 +21,7 @@ public interface ProyectoService {
 
     Optional<ProyectoCreatedDto> createProject(ProyectoCreateDto proyectoCreateDto);
 
-    List<ProyectoDto> getAllProyectos();
+    List<ProyectoDto> getAllProyectos(Optional<LocalDate> fechaInicio,
+                                      Optional<LocalDate> fechaFin,
+                                      String nombre);
 }
