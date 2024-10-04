@@ -1,13 +1,10 @@
 package com.info.app.projectapp.controller.proyecto;
 
-import com.info.app.projectapp.domain.Proyecto;
 import com.info.app.projectapp.dto.errors.ErroresDto;
 import com.info.app.projectapp.dto.project.ProyectoCreateDto;
 import com.info.app.projectapp.dto.project.ProyectoCreatedDto;
 import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
-import com.info.app.projectapp.dto.user.UsuarioDto;
-import com.info.app.projectapp.exceptions.NotFoundException;
 import com.info.app.projectapp.service.proyecto.ProyectoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
