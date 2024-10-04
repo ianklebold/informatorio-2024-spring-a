@@ -1,8 +1,11 @@
 package com.info.app.projectapp.service.task;
 
+import com.info.app.projectapp.domain.Tarea;
 import com.info.app.projectapp.domain.enums.EstadoTareaEnum;
 import com.info.app.projectapp.dto.task.TaskCreatedDto;
 import com.info.app.projectapp.dto.task.TaskDto;
+import com.info.app.projectapp.repository.task.TaskRepository;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,6 +13,12 @@ import java.util.UUID;
 
 @Service
 public class TaskServiceImpl implements TaskService{
+
+    private final TaskRepository taskRepository;
+
+    public TaskServiceImpl(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     @Override
     public Optional<TaskCreatedDto> createTask(TaskDto task) {
@@ -40,6 +49,18 @@ public class TaskServiceImpl implements TaskService{
             // --> Actualizar su estado a lo que indique estadoTareaEnum
             // --> Guardar
             // --> Retornar true en caso de que salio OK o False en otro caso.
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteTask(UUID idTask) {
+
+        if ( taskRepository.existsById(idTask) ){
+
+            taskRepository.deleteById(idTask);
+            return true;
+        }
 
         return false;
     }

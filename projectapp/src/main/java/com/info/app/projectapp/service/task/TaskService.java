@@ -14,4 +14,5 @@ public interface TaskService {
 
     boolean updateStateTask(UUID idTask, EstadoTareaEnum estadoTareaEnum);
 
+    boolean deleteTask(UUID idTask);
 }
