@@ -11,6 +11,7 @@ import com.info.app.projectapp.service.proyecto.ProyectoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -37,5 +38,13 @@ public class UserServiceImpl implements UserService{
 
         //proyectoRepository.save( proyecto ); <-- TODO No lo necesitamos por el Cascade de Proyecto a Usuario. Eliminarlo!
         return userMapper.usuarioToUsuarioDto( usuarioRepository.save( usuarioCreated ) );
+    }
+
+    @Override
+    public boolean checkIfUserExist(UUID id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new NoSuchElementException("El colaborador con ID "+id+" no existe." );
+        }
+        return true;
     }
 }

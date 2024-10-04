@@ -7,6 +7,7 @@ import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
 import com.info.app.projectapp.service.proyecto.ProyectoService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/v1/proyecto")
 @AllArgsConstructor
+@Slf4j
 public class ProyectoController {
 
     private ProyectoService proyectoService;
 
-    @PostMapping("/api/v1/proyecto")
+    @PostMapping()
     public ResponseEntity<?> createProject(@RequestBody ProyectoCreateDto proyectoCreateDto) {
 
         Optional<ProyectoCreatedDto> proyectoCreatedDto = proyectoService.createProject( proyectoCreateDto );
@@ -33,7 +36,7 @@ public class ProyectoController {
                 .body( proyectoCreatedDto.get() );
     }
 
-    @PutMapping("/api/v1/proyecto/close/{idProyecto}")
+    @PutMapping("/close/{idProyecto}")
     public ResponseEntity closeProject(@PathVariable("idProyecto") UUID idProyecto){
         Optional<ProyectoUpdatedDto> proyectoUpdatedDto = proyectoService.closeProject( idProyecto );
 
@@ -44,17 +47,17 @@ public class ProyectoController {
         return ResponseEntity.status( HttpStatus.NO_CONTENT ).build();
     }
 
-    @GetMapping("/api/v1/proyecto")
+    @GetMapping()
     public List<ProyectoDto> getAllProyectos(
             @RequestParam(required = false, name = "fechaInicio")LocalDate fechaInicio,
             @RequestParam(required = false, name = "fechaFin") LocalDate fechaFin,
             @RequestParam(required = false, name = "nombre") String nombre
             ){
 
-        System.out.println("Fecha de Inicio: " + fechaInicio);
-        System.out.println("Fecha de Fin: " + fechaFin);
-        System.out.println("Fecha de nombre: " + nombre);
-
+        log.info("Entrando al endpoint getAllProyectos");
+        log.debug("Modo debug entrando al endpoint getAllProyectos");
+        log.warn("Modo warn entrando al endpoint getAllProyectos");
+        log.error("Modo error entrando al endpoint getAllProyectos");
 
         return proyectoService.getAllProyectos(
                 Optional.ofNullable(fechaInicio),
@@ -63,7 +66,7 @@ public class ProyectoController {
         );
     }
 
-    @GetMapping("/api/v1/proyecto/{idProyecto}")
+    @GetMapping("/{idProyecto}")
     public ResponseEntity<?> getProjectById(@PathVariable("idProyecto") UUID idProyecto){
 
         Optional<ProyectoDto> proyectoDto = proyectoService.getProyectoDtoById(idProyecto);
