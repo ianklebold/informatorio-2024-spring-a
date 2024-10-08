@@ -6,6 +6,7 @@ import com.info.app.projectapp.dto.project.ProyectoCreatedDto;
 import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
 import com.info.app.projectapp.service.proyecto.ProyectoService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +29,7 @@ public class ProyectoController {
     private ProyectoService proyectoService;
 
     @PostMapping()
-    public ResponseEntity<?> createProject(@RequestBody ProyectoCreateDto proyectoCreateDto) {
+    public ResponseEntity<?> createProject(@Valid @RequestBody ProyectoCreateDto proyectoCreateDto) {
 
         Optional<ProyectoCreatedDto> proyectoCreatedDto = proyectoService.createProject( proyectoCreateDto );
 
@@ -41,7 +43,7 @@ public class ProyectoController {
         Optional<ProyectoUpdatedDto> proyectoUpdatedDto = proyectoService.closeProject( idProyecto );
 
         if ( proyectoUpdatedDto.isEmpty() ){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no encontrado");
+            throw new NoSuchElementException("Proyecto no encontrado");
         }
 
         return ResponseEntity.status( HttpStatus.NO_CONTENT ).build();
@@ -72,13 +74,14 @@ public class ProyectoController {
         Optional<ProyectoDto> proyectoDto = proyectoService.getProyectoDtoById(idProyecto);
 
         if ( proyectoDto.isEmpty() ){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new ErroresDto(
-                            String.format("El proyecto(id=%s) no existe", idProyecto.toString() ),
-                            HttpStatus.NOT_FOUND.value(),
-                            "/api/v1/proyecto/"+idProyecto.toString(
-                    )));
+//            return ResponseEntity
+//                    .status(HttpStatus.NOT_FOUND)
+//                    .body(new ErroresDto(
+//                            String.format("El proyecto(id=%s) no existe", idProyecto.toString() ),
+//                            HttpStatus.NOT_FOUND.value(),
+//                            "/api/v1/proyecto/"+idProyecto.toString(
+//                    )));
+            throw new NoSuchElementException("Proyecto no encontrado");
         }
 
         return ResponseEntity
