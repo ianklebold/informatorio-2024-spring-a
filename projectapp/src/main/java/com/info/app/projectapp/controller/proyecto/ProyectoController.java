@@ -1,11 +1,17 @@
 package com.info.app.projectapp.controller.proyecto;
 
+import com.info.app.projectapp.dto.errors.ErrorDtoNotFound;
 import com.info.app.projectapp.dto.errors.ErroresDto;
 import com.info.app.projectapp.dto.project.ProyectoCreateDto;
 import com.info.app.projectapp.dto.project.ProyectoCreatedDto;
 import com.info.app.projectapp.dto.project.ProyectoDto;
 import com.info.app.projectapp.dto.project.ProyectoUpdatedDto;
 import com.info.app.projectapp.service.proyecto.ProyectoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +34,17 @@ public class ProyectoController {
 
     private ProyectoService proyectoService;
 
+    @Operation(
+            summary = "API REST para crear proyectos",
+            description = "API REST que permite crear un proyecto"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "Proyecto creado",
+                    content = @Content( schema = @Schema(implementation = ProyectoCreatedDto.class))
+            )
+    })
     @PostMapping()
     public ResponseEntity<?> createProject(@Valid @RequestBody ProyectoCreateDto proyectoCreateDto) {
 
@@ -38,6 +55,23 @@ public class ProyectoController {
                 .body( proyectoCreatedDto.get() );
     }
 
+    @Operation(
+            summary = "API REST para cerrar el proyecto",
+            description = "API REST que permite cerrar el proyecto a partir de su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "No hay contenido para mostrar"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro el proyecto",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDtoNotFound.class)
+                    )
+            )
+    })
     @PutMapping("/close/{idProyecto}")
     public ResponseEntity closeProject(@PathVariable("idProyecto") UUID idProyecto){
         Optional<ProyectoUpdatedDto> proyectoUpdatedDto = proyectoService.closeProject( idProyecto );
